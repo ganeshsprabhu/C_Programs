@@ -5,7 +5,9 @@
 int nondet_int();
 
 // Function to generate a nondeterministic integer within the range [1, 32]
-// Bit flip - Between 1 to 32 bits
+// Bit flip - Between 1 to 32 bits : 
+// The function simulate_seu simulates a Single Event Upset (SEU) by flipping a bit at a nondeterministic 
+// position within a 32-bit range.
 int nondet_int_range_1_32() {
     int value = nondet_int() % 32 + 1;
     __CPROVER_assume(value >= 1 && value <= 32); // Example assumption for positive x
@@ -18,6 +20,7 @@ int simulate_seu(int value, int bit_pos) {
     return (value ^ mask); //XOR operation for bit flip
 }
 
+//Ensures that an SEU is introduced only once for the variable under investigation, controlled via a static counter.
 void simulate_seu_main(int *invest_var) {
     static int count = 0;  // To make sure that SEU happens only once
     if(count == 0) {
@@ -73,7 +76,7 @@ int main() {
     int x_output = p_prime_x(x, y); // p'(x): Instrumented program, x is the variable under investigation
     int y_output = p_prime_y(x, y); // p'(y): Instrumented program, y is the variable under investigation
 
-    //Safety Conditions assignment
+    //Safety Conditions assignment :  tracks whether the safety property (output <= 10) holds after the SEU is introduced for x/y
     int phi = output <= 10;
     int phi_prime_x = x_output <= 10;
     int phi_prime_y = y_output <= 10;
