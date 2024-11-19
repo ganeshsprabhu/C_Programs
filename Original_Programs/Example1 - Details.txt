@@ -1,0 +1,27 @@
+
+CRV : temperature, fan_speed, mode
+Not always a CRV :  humidity_level (But, Its a CRV)
+Not a CRV : alarm
+
+Details in the code:
+ Line1 : if (humidity_level >= 20 && humidity_level <= 80) {
+ Line2 :     temperature += humidity_level * 0.05;  // Small adjustment based on humidity
+ Line 3: }
+ 
+Observation1 : In this example
+- Line 1 checks if humidity_level is between 20 and 80. If so, we adjust the temperature in Line 2.
+- Because we have set bounds, humidity_level is not a CRV by itself.
+- We do not have two different values of humidity_level that could satisfy and violate the safety condition (temperature ≤ 30 degrees).
+  [Just check the initial values for temperature, , fan_speed, mode and trace the code manually!!
+ 
+Observation2 : In this example
+Now, if a Single Event Upset (SEU) happens:
+- At Line 1: Even if an SEU changes humidity_level during this check, there’s no problem because the temperature is not affected.
+- At Line 2: If an SEU occurs and humidity_level becomes something extreme (e.g., 5000), 
+  it could significantly affect the temperature and cause a violation. In this case, humidity_level becomes a CRV.
+  
+In summary, humidity_level only affects the safety condition at Line 2, not at Line 1.
+So, we can declare it s CRV. Humidity Level: Only becomes a CRV in extreme cases
+
+Slice Identified CRVs : ?
+Our Algo Identified CRVs : ?

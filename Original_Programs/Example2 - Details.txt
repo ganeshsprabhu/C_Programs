@@ -1,0 +1,2 @@
+CRV : temperature, fan_speed, system_mode
+Non-CRV: operating_hours  (Lets check) 
