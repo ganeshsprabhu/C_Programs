@@ -1,3 +1,19 @@
 CRV : Output, x, count
 Not CRV : y, alarm
 
+Details:
+The problem computes the value of the output variable 'output'. 
+Suppose that there is correctness condition imposed on the system
+that says that 'output' should be less than or equal to 10. We can see that it is
+possible to violate this condition in the given code. The program iterates
+through the outer while loop exactly 7 times. If the branch condition (x > 10)
+is false, 'output' would be incremented by 1 in each iteration. In 7 iteration, its value
+would be 11, which would violate the safety condition. But, an interesting
+aspect of this situation is that the above computation never uses the value
+of y. This is not to say that 'output'o is not dependent on y; in fact, it is dependent
+on y. A traditional static slicing would reveal this to us. But what this
+technique would fail to discover is that 'output' doesn’t depend on y’s value when
+it violates the safety condition. This is to say that y is not relevant as far as
+the safety condition output ≤ 10 is concerned. We resort to formal verification to
+identify such cases.
+
